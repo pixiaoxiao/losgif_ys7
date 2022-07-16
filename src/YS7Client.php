@@ -5,6 +5,7 @@ namespace Losgif\YS7;
 
 use Losgif\YS7\Auth\BaseAuth;
 use Losgif\YS7\Clients\BaseClient;
+use Losgif\YS7\Traits\RecursiveClientMixin;
 
 /**
  * YS7Client
@@ -27,6 +28,7 @@ use Losgif\YS7\Clients\BaseClient;
  */
 class YS7Client extends BaseClient
 {
+    use RecursiveClientMixin;
     protected $clients
         = [
             'ai'     => Clients\AI\AIClient::class,

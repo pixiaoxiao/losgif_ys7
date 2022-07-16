@@ -2,6 +2,7 @@
 namespace Losgif\YS7\Clients\MQ;
 
 use Losgif\YS7\Clients\BaseClient;
+use Losgif\YS7\Traits\RecursiveClientMixin;
 
 /**
  * 消息订阅
@@ -11,6 +12,7 @@ use Losgif\YS7\Clients\BaseClient;
  */
 class MQClient extends BaseClient
 {
+    use RecursiveClientMixin;
     protected $clients = [
         'consumer' => ConsumerClient::class
     ];

@@ -3,6 +3,7 @@
 namespace Losgif\YS7\Clients\Device;
 
 use Losgif\YS7\Clients\BaseClient;
+use Losgif\YS7\Traits\RecursiveClientMixin;
 
 /**
  * 设备
@@ -17,6 +18,7 @@ use Losgif\YS7\Clients\BaseClient;
  */
 class DeviceClient extends BaseClient
 {
+    use RecursiveClientMixin;
     protected $clients
         = [
             'camera'        => CameraClient::class,

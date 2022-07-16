@@ -15,11 +15,11 @@ class LiveClient extends BaseClient
      * @param mixed $deviceSerial
      * @param mixed $expiresIn 过期秒数 5分钟到720天之间
      * @param mixed $channelNo
-     *
+     * @param  array $options 其他参数 详情请查看萤石文档 https://open.ys7.com/help/82#address-api
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function address($deviceSerial, $expiresIn = null, $channelNo = 1)
+    public function address($deviceSerial, $expiresIn = null, $channelNo = 1,$options = [])
     {
         $req = [
             'deviceSerial' => $deviceSerial,
@@ -28,7 +28,9 @@ class LiveClient extends BaseClient
         if ($expiresIn) {
             $req['expireTime'] = $expiresIn;
         }
-        return $this->sendWithAuth('/api/lapp/live/address/limited', $req)->json()['data'];
+        $req = array_merge($options, $req);
+//        return $this->sendWithAuth('/api/lapp/live/address/limited', $req)->json()['data'];
+        return $this->sendWithAuth('/api/lapp/v2/live/address/get', $req)->json()['data'];
     }
 
     /**

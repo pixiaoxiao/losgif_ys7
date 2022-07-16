@@ -2,6 +2,8 @@
 
 namespace Losgif\YS7\Clients;
 
+use DateTimeZone;
+
 /**
  * EZOPEN协议
  * https://open.ys7.com/doc/zh/readme/ezopen.html
@@ -13,18 +15,20 @@ class EZOpen extends BaseClient
         'baseUrl' => 'ezopen://open.ys7.com/',
     ];
 
+    const TYPE_LIVE = 1; //预览
+    const TYPE_REC = 2; //预览
     /**
      * 获取直播地址
      *
      * @param string $deviceSerial
      * @param int    $channelNo
-     * @param array  $options
-     *
+     * @param array  $options 其他参数 详情请查看萤石文档 https://open.ys7.com/help/82#address-api
      * @return string
      */
     public function live(string $deviceSerial, $channelNo = 1, $options = []): string
     {
-        return $this->getEZUrl($deviceSerial, $channelNo, '.live', $options);
+        $options['type'] =  self::TYPE_LIVE;
+        return $this->getEZUrl($deviceSerial, $channelNo,  $options);
     }
 
     /**
@@ -41,12 +45,13 @@ class EZOpen extends BaseClient
     public function rec(string $deviceSerial, int $channelNo = 1, $start = null, $end = null, $options = []): string
     {
         if ($start) {
-            $options['start'] = (new \DateTime("@$start"))->format('YmdHis');
+            $options['startTime'] = $start;
         }
         if ($end) {
-            $options['end'] = (new \DateTime("@$end"))->format('YmdHis');
+            $options['stopTime'] = $end;
         }
-        return $this->getEZUrl($deviceSerial, $channelNo, '.rec', $options);
+        $options['type'] =  self::TYPE_REC;
+        return $this->getEZUrl($deviceSerial, $channelNo,  $options);
     }
 
     /**
@@ -57,37 +62,35 @@ class EZOpen extends BaseClient
      *
      * @return string
      */
-    private function getEZUrl(string $deviceSerial, int $channelNo, $type, $options = []): string
+    private function getEZUrl(string $deviceSerial, int $channelNo, $options = []): string
     {
-        $options = array_merge(static::$defaultOptions, $options);
-        $videoId = $this->getVideoId($deviceSerial, $channelNo);
-        $url = $options['baseUrl'] . $videoId;
-        if ($options['resolution']) {
-            $url .= '.' . $options['resolution'];
-        }
-        $url .= $type;
-        unset($options['baseUrl'], $options['resolution']);
-
-        if ($queryStr = http_build_query($options)) {
-            $url .= '?' . $queryStr;
-        }
-
+        $url = $this->getVideoUrl($deviceSerial, $channelNo,$options);
         return $url;
+    }
+    /**
+     * @var liveClient $liveClient
+     * */
+    protected $liveClient;
+    protected  function  setLiveClient(){
+        $this->liveClient = new LiveClient($this->auth);
+    }
+
+    public function getLiveClient(){
+        if(empty($this->liveClient)){
+            $this->setLiveClient();
+        }
+        return $this->liveClient;
     }
 
     /**
      * @param $deviceSerial
      * @param $channelNo
-     *
+     * @param $options
      * @return string
      */
-    private function getVideoId($deviceSerial, $channelNo): string
+    private function getVideoUrl($deviceSerial, $channelNo,$options=[]): string
     {
-        $data = $this->getBaseClient()->live->address($deviceSerial, null, $channelNo);
-        $originAddress = $data['liveAddress'];
-        $originPath = parse_url($originAddress, PHP_URL_PATH);
-        $array = explode('/', $originPath);
-        $filename = array_pop($array);
-        return explode('.', $filename)[0];
+        $data = $this->getLiveClient()->address($deviceSerial, null, $channelNo,$options);
+        return $data['url'];
     }
 }

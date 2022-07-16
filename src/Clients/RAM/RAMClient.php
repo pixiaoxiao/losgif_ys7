@@ -2,6 +2,7 @@
 namespace Losgif\YS7\Clients\RAM;
 
 use Losgif\YS7\Clients\BaseClient;
+use Losgif\YS7\Traits\RecursiveClientMixin;
 
 /**
  * 子账户
@@ -13,6 +14,7 @@ use Losgif\YS7\Clients\BaseClient;
  */
 class RAMClient extends BaseClient
 {
+    use RecursiveClientMixin;
     protected $clients = [
         'account' => AccountClient::class,
         'policy' => PolicyClient::class,

@@ -2,6 +2,7 @@
 namespace Losgif\YS7\Clients\Device;
 
 use Losgif\YS7\Clients\BaseClient;
+use Losgif\YS7\Traits\RecursiveClientMixin;
 
 /**
  * 云台
@@ -11,6 +12,7 @@ use Losgif\YS7\Clients\BaseClient;
  */
 class PTZClient extends BaseClient
 {
+    use RecursiveClientMixin;
     protected $clients = [
         'preset' => PresetClient::class
     ];

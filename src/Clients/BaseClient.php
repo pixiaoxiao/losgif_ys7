@@ -19,7 +19,6 @@ use Losgif\YS7\Traits\RecursiveClientMixin;
  */
 class BaseClient
 {
-    use RecursiveClientMixin;
     protected $config
         = [
             'base_uri' => 'https://open.ys7.com',
@@ -35,7 +34,6 @@ class BaseClient
      * BaseClient constructor.
      *
      * @param  \Losgif\YS7\Auth\BaseAuth  $auth
-     * @param  array                      $config
      */
     public function __construct(BaseAuth $auth)
     {
