@@ -20,7 +20,13 @@ use Losgif\YS7\Traits\RecursiveClientMixin;
 class BaseClient
 {
     use RecursiveClientMixin;
-
+    protected $config
+        = [
+            'base_uri' => 'https://open.ys7.com',
+            'timeout'  => 3.0,
+//            'debug' => true,
+            'Content-Type' => 'application/x-www-form-urlencoded',
+        ];
     protected $auth;
 
     private $httpClient;
@@ -31,10 +37,11 @@ class BaseClient
      * @param  \Losgif\YS7\Auth\BaseAuth  $auth
      * @param  array                      $config
      */
-    public function __construct(BaseAuth $auth, array $config = [])
+    public function __construct(BaseAuth $auth)
     {
+        $this->setHttpClient(new Client($this->config));
+        $auth = $this->getToken($auth);
         $this->setAuth($auth);
-        $this->setHttpClient(new Client($config));
     }
 
     public function getAuth(): BaseAuth
@@ -45,6 +52,21 @@ class BaseClient
     public function setAuth(BaseAuth $auth): void
     {
         $this->auth = $auth;
+    }
+
+    public function getToken(BaseAuth $auth): BaseAuth
+    {
+        if (empty($auth->accessToken)) {
+            $resp = $this->send('/api/lapp/token/get', [
+                'appKey' => $auth->getAppKey(),
+                'appSecret' => $auth->getAppSecret()
+            ]);
+            $data = $resp->json()['data'];
+            $auth->setAccessToken($data['accessToken']);
+            $auth->setExpireTime($data['expireTime']);
+            return $auth;
+        }
+        return $auth;
     }
 
     /**
@@ -76,19 +98,17 @@ class BaseClient
      */
     public function send(string $url, $data = [], $method = 'POST', $params = [], $headers = [], $options = []): Response
     {
-        $client = $this->httpClient ?? new Client();
-
+        $client = $this->httpClient ?? new Client($this->config);
         $options = array_merge([
             'form_params' => $data,
             'query' => $params,
             'headers' => $headers,
-        ], $options);
 
-        $request = new Request($method, $url);
+        ], $options);
+        $request = new Request($method,$url );
         $response = $client->request($method, $url, $options);
         $responseObject = new Response($response->getBody()->getContents());
         $responseMessage = $responseObject->json();
-
         if ($responseMessage['code'] !== '200') {
             throw new YS7BadResponseException($responseMessage['msg'], $request, $response);
         }

@@ -47,6 +47,12 @@ class YS7Auth extends BaseAuth
         $this->setAppSecret($appSecret);
     }
 
+    protected function getAccessTokenKey()
+    {
+        $appKey = md5($this->getAppKey() . ' ' . $this->getAppSecret());
+        return "ys7:app:$appKey:accesstoken";
+    }
+
     /**
      * @return mixed
      */

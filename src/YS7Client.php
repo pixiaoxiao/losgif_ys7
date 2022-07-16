@@ -27,12 +27,6 @@ use Losgif\YS7\Clients\BaseClient;
  */
 class YS7Client extends BaseClient
 {
-    protected $config
-        = [
-            'base_uri' => 'https://open.ys7.com',
-            'timeout'  => 3.0,
-        ];
-
     protected $clients
         = [
             'ai'     => Clients\AI\AIClient::class,
@@ -51,6 +45,6 @@ class YS7Client extends BaseClient
      */
     public function __construct(BaseAuth $auth)
     {
-        parent::__construct($auth, $this->config);
+        parent::__construct($auth);
     }
 }

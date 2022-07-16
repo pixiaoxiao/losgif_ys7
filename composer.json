@@ -1,5 +1,5 @@
 {
-    "name": "losgif\/ys7",
+    "name": "pixiaoxiao/losgif_ys7",
     "description": "海康威视设备萤石开放平台(萤石云)PHP SDK,用于接入海康设备直播,通信等功能",
     "license": "MIT",
     "keywords": [
@@ -7,12 +7,12 @@
         "萤石",
         "Hikvision"
     ],
-    "homepage": "https://github.com/losgif/ys7",
+    "homepage": "https://github.com/pixiaoxiao/losgif_ys7.git",
     "authors": [
         {
-            "name": "losgif",
-            "email": "losgif@gmail.com",
-            "homepage": "https://github.com/losgif",
+            "name": "pixiaoxiao",
+            "email": "",
+            "homepage": "https://github.com/pixiaoxiao/",
             "role": "Developer"
         }
     ],

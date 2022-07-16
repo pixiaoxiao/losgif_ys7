@@ -2,6 +2,7 @@
 
 namespace Losgif\YS7\Clients;
 
+use GuzzleHttp\Client;
 use Losgif\YS7\Auth\BaseAuth;
 
 /**
@@ -10,6 +11,9 @@ use Losgif\YS7\Auth\BaseAuth;
  */
 class TokenClient extends BaseClient
 {
+
+
+
     /**
      * @param  \Losgif\YS7\Auth\BaseAuth  $auth
      *

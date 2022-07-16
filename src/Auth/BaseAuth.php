@@ -11,7 +11,7 @@ use Losgif\YS7\Exceptions\YS7AuthParameterEmptyException;
  */
 abstract class BaseAuth
 {
-    private $accessToken;
+    public $accessToken;
     private $expireTime;
 
     /**
