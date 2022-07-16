@@ -1,12 +1,12 @@
 <h1 align="center"> ys7 </h1>
-
+在 losgif/ys7 基础上处理了access_token的问题
 <p align="center"> 海康威视设备萤石开放平台(萤石云)PHP SDK,用于接入海康设备直播,通信等功能.</p>
 
 
 ## Installing
 
 ```shell
-$ composer require losgif/ys7 -vvv
+$ composer require pixiaoxiao/losgif_ys7 -vvv
 ```
 
 ## Usage
