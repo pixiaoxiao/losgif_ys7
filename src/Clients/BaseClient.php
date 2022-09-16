@@ -22,7 +22,7 @@ class BaseClient
     protected $config
         = [
             'base_uri' => 'https://open.ys7.com',
-            'timeout'  => 3.0,
+            'timeout'  => 10,
 //            'debug' => true,
             'Content-Type' => 'application/x-www-form-urlencoded',
         ];

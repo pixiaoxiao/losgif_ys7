@@ -16,7 +16,8 @@ class EZOpen extends BaseClient
     ];
 
     const TYPE_LIVE = 1; //预览
-    const TYPE_REC = 2; //预览
+    const TYPE_REC_LOCAL = 2; //-本地录像回放
+    const TYPE_REC = 3; //云存储录像回放
     /**
      * 获取直播地址
      *
@@ -50,7 +51,7 @@ class EZOpen extends BaseClient
         if ($end) {
             $options['stopTime'] = $end;
         }
-        $options['type'] =  self::TYPE_REC;
+//        $options['type'] =  self::TYPE_REC;
         return $this->getEZUrl($deviceSerial, $channelNo,  $options);
     }
 
